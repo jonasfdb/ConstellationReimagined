@@ -164,3 +164,69 @@
   .mini-panel{width: 92vw}
   .card-grid{grid-template-columns: repeat(2, 1fr)}
 }
+
+/* Small icon button variant (reuses hud-btn look) */
+.hud-btn--icon{
+  padding:10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Mobile: turn right side into a bottom sheet */
+@media (max-width: 760px){
+  .hud-title{
+    flex-wrap:wrap;               /* lets buttons wrap nicely */
+    border-radius: 22px;          /* less “pill”, more compact */
+  }
+
+  /* Hide the long helper text by default; we’ll keep it accessible but compact */
+  .hud-sub{
+    max-width: none;
+    font-size:12px;
+    margin-top:8px;
+  }
+
+  /* Bottom sheet container */
+  .hud-right{
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    top: auto;
+    display: block;
+    pointer-events: none;         /* same idea as your hud */
+    z-index: 20;
+    transform: translateY(calc(100% - 56px)); /* collapsed: show a “peek” */
+    transition: transform .22s ease;
+  }
+
+  /* When open */
+  .hud-right.is-open{
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Make panels full width and slightly more compact */
+  .mini-panel{
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* Prevent the list from becoming tiny; allow scrolling inside */
+  .mini-list{
+    max-height: 32vh;
+  }
+
+  /* Toast stays above the sheet */
+  .toast{
+    bottom: 86px;
+  }
+
+  /* Card panel: use more vertical space */
+  .card-modal__panel{
+    width: min(720px, 94vw);
+    max-height: 86vh;
+    overflow:auto;
+  }
+}

@@ -17,6 +17,9 @@
   const cardBackdrop = document.getElementById('cardBackdrop');
   const cardClose = document.getElementById('cardClose');
 
+  const btnPanels = document.getElementById('btnPanels');
+  const hudRight = document.getElementById('hudRight');
+
   const toast = document.getElementById('toast');
 
   const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
@@ -34,6 +37,14 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  
+  function dist(a, b) {
+    const dx = a.x - b.x, dy = a.y - b.y;
+    return Math.hypot(dx, dy);
+  }
+  function mid(a, b) {
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  }
 
   function showToast(msg) {
     toast.textContent = msg;
@@ -341,6 +352,28 @@
     return null;
   }
 
+  // mobile
+  function setPanelsOpen(open) {
+    if (!hudRight || !btnPanels) return;
+    hudRight.classList.toggle('is-open', open);
+    btnPanels.setAttribute('aria-pressed', String(open));
+  }
+
+  if (btnPanels) {
+    btnPanels.addEventListener('click', () => {
+      const open = !hudRight.classList.contains('is-open');
+      setPanelsOpen(open);
+    });
+  }
+
+  canvas.addEventListener("pointerdown", () => {
+    if (window.innerWidth <= 760) setPanelsOpen(false);
+  });
+
+  const pointers = new Map(); // id -> {x,y}
+  let gesture = null; // {type, startDist, startZoom, startMid, startCam}
+
+
   // keys and shit
   window.addEventListener("keydown", (e) => {
     // ignore typing in inputs jiust in case
@@ -540,12 +573,29 @@
   }
 
   canvas.addEventListener("pointerdown", (e) => {
-    // Capture pointer so we can drag even if leaving canvas
     canvas.setPointerCapture(e.pointerId);
 
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    // If second finger goes down, start pinch gesture
+    if (pointers.size === 2) {
+      cancelCameraAnim();
+      isDown = false;        // stop single-drag mode
+      isDragging = true;     // prevent click
+      const pts = [...pointers.values()];
+      const m = mid(pts[0], pts[1]);
+      gesture = {
+        startDist: dist(pts[0], pts[1]),
+        startZoom: camera.zoom,
+        startMid: m,
+        startCam: { x: camera.x, y: camera.y }
+      };
+      return;
+    }
+
+    // Single pointer: your existing drag setup
     isDown = true;
     isDragging = false;
-
     dragStart.x = e.clientX;
     dragStart.y = e.clientY;
     camStart.x = camera.x;
@@ -557,6 +607,42 @@
     mouse.x = e.clientX - r.left;
     mouse.y = e.clientY - r.top;
 
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    // Pinch gesture active
+    if (pointers.size === 2 && gesture) {
+      const pts = [...pointers.values()];
+      const m = mid(pts[0], pts[1]);
+      const d = dist(pts[0], pts[1]);
+
+      // Zoom factor
+      const zoomFactor = d / (gesture.startDist || d);
+      const minZoom = 0.35;
+      const maxZoom = 9.0;
+
+      // Zoom around midpoint
+      const rect = canvas.getBoundingClientRect();
+      const sx = m.x - rect.left;
+      const sy = m.y - rect.top;
+
+      const before = screenToWorld(sx, sy);
+      camera.zoom = clamp(gesture.startZoom * zoomFactor, minZoom, maxZoom);
+      const after = screenToWorld(sx, sy);
+
+      camera.x += before.x - after.x;
+      camera.y += before.y - after.y;
+
+      // Also allow 2-finger pan (midpoint movement)
+      const dxPx = m.x - gesture.startMid.x;
+      const dyPx = m.y - gesture.startMid.y;
+      camera.x = gesture.startCam.x - dxPx / camera.zoom;
+      camera.y = gesture.startCam.y - dyPx / camera.zoom;
+
+      return;
+    }
+
+    // Single pointer drag (your existing logic)
     if (!isDown) return;
 
     const dxPx = e.clientX - dragStart.x;
@@ -568,23 +654,27 @@
     }
 
     if (isDragging) {
-      // Pan: screen delta -> world delta
-      const dxWorld = dxPx / camera.zoom;
-      const dyWorld = dyPx / camera.zoom;
-      camera.x = camStart.x - dxWorld;
-      camera.y = camStart.y - dyWorld;
+      camera.x = camStart.x - dxPx / camera.zoom;
+      camera.y = camStart.y - dyPx / camera.zoom;
     }
   });
 
   canvas.addEventListener("pointerup", (e) => {
+    pointers.delete(e.pointerId);
+
+    if (pointers.size < 2) gesture = null;
+
     isDown = false;
-    // keep isDragging around for click handler below
+    // keep isDragging for click handler
   });
 
-  canvas.addEventListener("pointercancel", () => {
+  canvas.addEventListener("pointercancel", (e) => {
+    pointers.delete(e.pointerId);
+    gesture = null;
     isDown = false;
     isDragging = false;
   });
+
 
   canvas.addEventListener("mouseleave", () => (state.hover = null));
 
