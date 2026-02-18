@@ -242,52 +242,16 @@
   // Missions (demo)
   const missions = [
     {
-      id: "CR-MLN-01",
-      name: "Selene Pathfinder",
+      id: "Orion-4892",
+      name: "Scott Checker",
       system: "Earth",
       target: "Moon",
       status: "Active • Nominal",
-      type: "Surface Relay Demonstrator",
-      launched: "2036-07-18",
+      type: "Checks for Scotts",
+      launched: "Some time",
       operator: "Constellation Reimagined",
       description:
-        "A demonstration of lunar surface relay nodes enabling continuous comms for polar operations."
-    },
-        {
-      id: "CR-MLN-02",
-      name: "Selene Explorer",
-      system: "Earth",
-      target: "Moon",
-      status: "Active • Nominal",
-      type: "Lunar Surface Exploration",
-      launched: "2036-07-18",
-      operator: "Constellation Reimagined",
-      description:
-        "A demonstration of lunar surface relay nodes enabling continuous comms for polar operations."
-    },
-        {
-      id: "bingus",
-      name: "bingus",
-      system: "Interstellar Space",
-      target: "Moon",
-      status: "Active • Nominal",
-      type: "Surface Relay Demonstrator",
-      launched: "2036-07-18",
-      operator: "Constellation Reimagined",
-      description:
-        "A demonstration of lunar surface relay nodes enabling continuous comms for polar operations."
-    },        
-    {
-      id: "bingus 2",
-      name: "bingus 2",
-      system: "Interstellar Space",
-      target: "Moon",
-      status: "Active • Nominal",
-      type: "Surface Relay Demonstrator",
-      launched: "2036-07-18",
-      operator: "Constellation Reimagined",
-      description:
-        "A demonstration of lunar surface relay nodes enabling continuous comms for polar operations."
+        "Checks if the Moon has turned into Scott Munley or not."
     }
   ];
 
