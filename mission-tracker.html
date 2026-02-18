@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Live Mission Tracker • Constellation Reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="tracker.css" />
+</head>
+<body class="tracker-body">
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Constellation Reimagined home">
+      <img src="assets/logo.png" alt="" class="brand-mark" />
+      <span class="brand-text">
+        <span class="brand-name">constellation</span>
+        <span class="brand-sub">reimagined</span>
+      </span>
+    </a>
+
+    <nav class="nav nav--inline">
+      <a href="mission-tracker.html" class="nav-link">Live Mission Tracker</a>
+      <a href="index.html#overview" class="nav-link">Program Overview</a>
+    </nav>
+  </header>
+
+  <main class="tracker">
+    <canvas id="space" aria-label="Interactive solar system mission tracker"></canvas>
+
+    <div class="hud">
+      <div class="hud-left">
+        <div class="hud-title">
+          <button class="hud-btn" id="btnBack" disabled>Back</button>
+          <button class="hud-btn" id="btnPause" aria-pressed="false">Pause</button>
+          <button class="hud-btn" id="btnReset">Reset View</button>
+          <span class="dot"></span>
+          <span id="hudMode">Solar System</span>
+        </div>
+        <div class="hud-sub" id="hudSub">Click a planet to zoom. Click a mission pin to view details.</div>
+      </div>
+
+      <div class="hud-right">
+        <div class="mini-panel">
+          <div class="mini-title">Time</div>
+          <div class="mini-list" style="max-height:none">
+            <div class="mini-item" style="cursor:default">
+              <div class="mini-top">
+                <div class="mini-name">Speed</div>
+                <div class="mini-tag" id="timeSpeedTag">10×</div>
+              </div>
+              <input
+                id="timeSpeed"
+                type="range"
+                min="0"
+                max="80"
+                step="1"
+                value="10"
+                aria-label="Time speed"
+                style="width:100%; margin-top:10px;"
+              />
+              <div class="mini-sub" id="timeSpeedHint" style="margin-top:8px">
+                0× freezes time. Space pauses/resumes.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mini-panel" style="margin-top: 10px;">
+          <div class="mini-title">Active Missions</div>
+          <div class="mini-list" id="missionList">
+            <div class="mini-empty">Select a planet to see missions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-modal" id="missionCard" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="card-modal__backdrop" id="cardBackdrop"></div>
+      <div class="card-modal__panel">
+        <div class="card-modal__top">
+          <div>
+            <div class="card-kicker" id="cardKicker">MISSION</div>
+            <div class="card-title" id="cardTitle">Selene Pathfinder</div>
+            <div class="card-sub" id="cardSub">Lunar Surface Relay Demonstrator</div>
+          </div>
+          <button class="hud-btn" id="cardClose">Close</button>
+        </div>
+
+        <div class="card-grid">
+          <div class="kv">
+            <div class="k">Status</div>
+            <div class="v" id="cardStatus">Active • Nominal</div>
+          </div>
+          <div class="kv">
+            <div class="k">Location</div>
+            <div class="v" id="cardLocation">Moon • Near-side</div>
+          </div>
+          <div class="kv">
+            <div class="k">Launched</div>
+            <div class="v" id="cardLaunch">2036-07-18</div>
+          </div>
+          <div class="kv">
+            <div class="k">Operator</div>
+            <div class="v" id="cardOperator">Constellation Reimagined</div>
+          </div>
+        </div>
+
+        <div class="card-desc" id="cardDesc">
+          Placeholder mission card. This panel will later include crew, vehicle stack, current orbital parameters,
+          downlink highlights, and a rolling event log.
+        </div>
+
+        <div class="card-actions">
+          <button class="hud-btn" disabled title="Coming soon">View Telemetry</button>
+          <button class="hud-btn" disabled title="Coming soon">Open Timeline</button>
+          <button class="hud-btn" disabled title="Coming soon">Open Gallery</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <script src="tracker.js"></script>
+</body>
+</html>

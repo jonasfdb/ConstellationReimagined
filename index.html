@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Constellation Reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Constellation Reimagined home">
+      <img src="assets/logo.png" alt="" class="brand-mark" />
+      <span class="brand-text">
+        <span class="brand-name">constellation</span>
+        <span class="brand-sub">reimagined</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="nav">
+      <a href="mission-tracker.html" class="nav-link">Live Mission Tracker</a>
+      <a href="#" class="nav-link is-disabled" aria-disabled="true" title="Coming soon">Mission Archive</a>
+      <a href="#" class="nav-link is-disabled" aria-disabled="true" title="Coming soon">Gallery</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">Fictional spaceflight program</p>
+        <h1 class="headline">
+          Imagine a <span class="grad-text">constellation</span><br/>
+          built for the next century.
+        </h1>
+        <p class="lede">
+          Constellation Reimagined is a near-future architecture for sustained exploration —
+          modular launch systems, reusable cislunar logistics, and a mission cadence designed for permanence.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn primary" href="mission-tracker.html">
+            Open Mission Tracker
+            <span class="btn-glow" aria-hidden="true"></span>
+          </a>
+          <a class="btn ghost" href="#overview">Program Overview</a>
+        </div>
+
+        <div class="stats" aria-label="Program highlights">
+          <div class="stat">
+            <div class="stat-num" data-count="12">0</div>
+            <div class="stat-label">Active Missions</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" data-count="3">0</div>
+            <div class="stat-label">Crewed Vehicles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" data-count="28">0</div>
+            <div class="stat-label">Launches This Year</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="card glow">
+          <img src="assets/hero-moon.png" alt="" />
+          <div class="card-overlay">
+            <div class="chip">Cislunar Operations</div>
+            <div class="card-title">Lunar Gateway Expansion</div>
+            <div class="card-sub">Transit • Logistics • Science</div>
+          </div>
+        </div>
+        <div class="card stack">
+          <img src="assets/hero-orbit-2.png" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <h2 class="section-title">What is Constellation Reimagined?</h2>
+      <div class="grid-3">
+        <article class="panel">
+          <h3>Persistent Presence</h3>
+          <p>Continuous operations in Earth orbit, cislunar space, and at Mars — built around standardized ports and refueling.</p>
+        </article>
+        <article class="panel">
+          <h3>Fleet Architecture</h3>
+          <p>One set of vehicles, many missions: heavy lift, crew transfer, cargo landers, and deep-space propulsion modules.</p>
+        </article>
+        <article class="panel">
+          <h3>Open Telemetry</h3>
+          <p>A public mission layer: live tracker, crew manifest, and a growing archive of flight history and imagery.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <div>
+          <div class="callout-title">Next up: the live tracker</div>
+          <div class="callout-sub">A 2D solar system view with mission pins and zoomable planetary systems.</div>
+        </div>
+        <a class="btn primary" href="mission-tracker.html">Launch Tracker</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="fineprint">© Constellation Reimagined (fictional). Designed for demonstration purposes.</div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
